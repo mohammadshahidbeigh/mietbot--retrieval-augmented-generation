@@ -1,0 +1,21 @@
+{
+  "name": "supermietbot",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "@langchain/community": "^0.0.43",
+    "@langchain/openai": "^0.0.23",
+    "@supabase/supabase-js": "^2.40.0",
+    "firebase": "^10.9.0",
+    "langchain": "^0.1.30"
+  }
+}
