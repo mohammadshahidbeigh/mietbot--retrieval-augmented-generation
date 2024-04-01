@@ -16,10 +16,7 @@ document.addEventListener("submit", (e) => {
 
 const openAIApiKey = "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";
 
-const llm = new ChatOpenAI({
-  openAIApiKey,
-  model: "text-embedding-3-small",
-});
+const llm = new ChatOpenAI({ openAIApiKey });
 
 const standaloneQuestionTemplate = `Given some conversation history (if any) and a question, convert the question to a standalone question. 
 conversation history: {conv_history}
@@ -29,7 +26,7 @@ const standaloneQuestionPrompt = PromptTemplate.fromTemplate(
   standaloneQuestionTemplate
 );
 
-const answerTemplate = `You are a helpful and enthusiastic support bot who can answer a given question about MIET Jammu based on the context provided and the conversation history. Try to find the answer in the context. If the answer is not given in the context, find the answer in the conversation history if possible. If you really don't know the answer, say "I'm sorry, I don't know the answer to that." And direct the questioner to email info@mietjammu.in. Don't try to make up an answer. Always speak as if you were chatting to a friend.
+const answerTemplate = `You are a supportive and dynamic conversational bot, designed to address any inquiries about MIET Jammu with the utmost precision. Your role involves analyzing the context and conversation history to provide the most accurate response. If the information needed to address the query isn't given in the context or conversation history, it's crucial to admit, "I'm sorry, I cannot provide a definitive answer to that." At this point, kindly guide the user to reach out to info@mietjammu.in for further assistance. Remember to avoid fabricating responses. Always keep your tone friendly, approachable, and informative.
 context: {context}
 conversation history: {conv_history}
 question: {question}
@@ -65,9 +62,7 @@ const convHistory = [];
 
 async function progressConversation() {
   const userInput = document.getElementById("user-input");
-  const chatbotConversation = document.getElementById(
-    "chatbot-conversation-container"
-  );
+  const chatbotConversation = document.getElementById("chatbot-conversation");
   const question = userInput.value;
   userInput.value = "";
 
@@ -100,9 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function clearConversation() {
-  const chatbotConversation = document.getElementById(
-    "chatbot-conversation-container"
-  );
+  const chatbotConversation = document.getElementById("chatbot-conversation");
   chatbotConversation.innerHTML =
-    '<div class="speech speech-ai">How can I assist you today?</div>';
+    '<div class="speech speech-ai">Hey there! Welcome to MIET Jammu\'s virtual assistant.<br> How can I assist you today?</div>';
 }

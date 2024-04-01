@@ -5,32 +5,36 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
     <title>MietBot</title>
-    <link rel="icon" href="images/owl-logo.png" type="image/x-icon" />
+    <link rel="icon" href="images/miet-logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="index.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    z
   </head>
 
   <body>
     <main>
       <section class="chatbot-container">
         <div class="chatbot-header">
-          <img src="images/owl-logo.png" class="logo" />
+          <img src="images/miet-logo.png" class="logo" />
           <h1>MIETBOT</h1>
           <h2>A virtual assistant from MIET, Jammu.</h2>
           <button class="clear-btn" id="clear-btn">Start Over</button>
         </div>
-        <div
-          class="chatbot-conversation-container"
-          id="chatbot-conversation-container"
-        >
-          <div class="speech speech-ai">How can I assist you today?</div>
+        <div class="chatbot-conversation" id="chatbot-conversation">
+          <div class="speech speech-ai">
+            Hey there! Welcome to MIET Jammu's virtual assistant. <br />
+            How can I assist you today?
+          </div>
         </div>
         <form id="form" class="chatbot-input-container">
           <input
@@ -46,6 +50,6 @@
         </form>
       </section>
     </main>
-    <script src="index.js" type="module"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>
