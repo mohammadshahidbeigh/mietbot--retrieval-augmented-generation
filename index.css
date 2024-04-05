@@ -205,23 +205,23 @@ h2 {
     justify-content: space-around;
   }
   .logo {
-    width: 50px; /* Adjust the logo size */
+    width: 50px;
     height: fit-content;
   }
   .chatbot-header h1,
   .chatbot-header h2 {
     height: 30%;
-    text-align: center; /* Center align the title and subtitle */
+    text-align: center;
   }
   .chatbot-header .clear-btn {
-    width: 70%; /* Adjust the clear button width */
+    width: 70%;
   }
   .chatbot-conversation {
-    height: 400%; /* Adjust conversation height */
+    height: 400%;
   }
   .speech {
     max-width: fit-content;
     height: fit-content;
-    font-size: 0.8em; /* Adjust speech bubble width */
+    font-size: 0.8em;
   }
 }
