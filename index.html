@@ -36,20 +36,29 @@
             How can I assist you today?
           </div>
         </div>
-        <form id="form" class="chatbot-input-container">
+        <div class="chatbot-input-container">
           <input
             name="user-input"
             type="text"
-            placeholder="Send a message"
+            placeholder="Type your message or click the microphone"
             id="user-input"
             required
           />
+          <button id="microphone-btn" class="microphone-btn">
+            <img src="images/microphone-btn-icon.png" class="microphone-icon" />
+          </button>
           <button id="submit-btn" class="submit-btn">
             <img src="images/send-btn-icon.png" class="send-btn-icon" />
           </button>
-        </form>
+        </div>
       </section>
     </main>
+    <audio id="mic-sound">
+      <source src="images/mic-sound.wav" type="audio/mpeg" />
+    </audio>
+    <audio id="mic-stop-sound">
+      <source src="images/mic-stop.wav" type="audio/mpeg" />
+    </audio>
     <script type="module" src="index.js"></script>
   </body>
 </html>
