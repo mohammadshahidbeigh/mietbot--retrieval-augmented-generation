@@ -234,6 +234,15 @@ h2 {
   .chatbot-conversation {
     height: 400%;
   }
+
+  /* stop ugly scroll bar on some browsers */
+  .chatbot-conversation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chatbot-conversation::-moz-scrollbar {
+    display: none;
+  }
   .speech {
     max-width: fit-content;
     height: fit-content;
@@ -247,6 +256,7 @@ h2 {
     justify-content: space-around;
     align-items: center;
   }
+
   .send-btn-icon,
   .microphone-icon {
     width: 19px;
