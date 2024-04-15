@@ -217,8 +217,8 @@ h2 {
   }
 
   .chatbot-container {
-    width: 90%;
-    min-height: 350px;
+    width: 100%;
+    height: 100%;
   }
 
   .speech {
@@ -227,11 +227,43 @@ h2 {
   }
 
   .logo {
-    width: 50px;
+    grid-area: logo;
+    width: 60px;
   }
 
   .clear-btn {
-    font-size: 10px;
+    grid-area: clear-btn;
+    height: 16px;
+    padding: 2px;
+    width: 100%;
+    font-size: 8px;
+    margin: 0 auto;
+    border: 2px solid black;
+    color: black;
+  }
+
+  .clear-btn:hover {
+    border: 2px solid whitesmoke;
+    color: white;
+    cursor: pointer;
+  }
+
+  h1 {
+    font-size: 18px;
+    color: black;
+    grid-area: title;
+  }
+
+  h2,
+  p {
+    color: var(--medium-light-text);
+  }
+
+  h2 {
+    font-size: 8px;
+    font-weight: 700;
+    grid-area: subtitle;
+    text-transform: uppercase;
   }
 }
 
