@@ -239,4 +239,20 @@ h2 {
     height: fit-content;
     font-size: 0.8em;
   }
+  .chatbot-input-container {
+    height: 12%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .send-btn-icon,
+  .microphone-icon {
+    width: 17px;
+    cursor: pointer;
+    border-left: none; /* Remove left border */
+    border-right: none; /* Remove right border */
+    border-radius: 0%;
+    background-color: transparent; /* Remove background color */
+  }
 }
