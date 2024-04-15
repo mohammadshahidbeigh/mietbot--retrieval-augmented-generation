@@ -237,19 +237,19 @@ h2 {
   .speech {
     max-width: fit-content;
     height: fit-content;
-    font-size: 0.9em;
+    font-size: 1em;
   }
   .chatbot-input-container {
     height: 12%;
     width: 100%;
-    padding: 3%;
+    padding: 2%;
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
   .send-btn-icon,
   .microphone-icon {
-    width: 17px;
+    width: 19px;
     cursor: pointer;
     border-left: none; /* Remove left border */
     border-right: none; /* Remove right border */
