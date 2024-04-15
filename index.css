@@ -207,6 +207,15 @@ h2 {
 
 /* Extra small screens (portrait phones) */
 @media only screen and (max-width: 479px) {
+  /* stop ugly scroll bar on some browsers */
+  main ::-webkit-scrollbar {
+    display: none;
+  }
+
+  main ::-moz-scrollbar {
+    display: none;
+  }
+
   .chatbot-container {
     height: 85%;
     width: 85%;
@@ -233,15 +242,6 @@ h2 {
   }
   .chatbot-conversation {
     height: 400%;
-  }
-
-  /* stop ugly scroll bar on some browsers */
-  .chatbot-conversation::-webkit-scrollbar {
-    display: none;
-  }
-
-  .chatbot-conversation::-moz-scrollbar {
-    display: none;
   }
   .speech {
     max-width: fit-content;
