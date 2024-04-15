@@ -127,13 +127,6 @@ async function progressConversation() {
   // Scroll to the bottom of the conversation container after adding the AI message
   chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
 
-  // Calculate the distance from the bottom of the container
-  const distanceFromBottom =
-    chatbotConversation.scrollHeight - chatbotConversation.clientHeight;
-
-  // Scroll to the calculated distance from the bottom
-  chatbotConversation.scrollTop = distanceFromBottom;
-
   // Store conversation in Firebase
   push(conversationRef, {
     question: question,
