@@ -107,6 +107,8 @@ async function progressConversation() {
   chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
 
   // Get response from AI
+
+  // Get response from AI
   const response = await chain.invoke({
     question: question,
     conv_history: formatConvHistory(convHistory),
@@ -115,7 +117,9 @@ async function progressConversation() {
   convHistory.push(response);
 
   // Add AI message
+  // Add AI message
   const newAiSpeechBubble = document.createElement("div");
+  newAiSpeechBubble.classList.add("speech", "speech-ai", "blinking-cursor"); // Add blinking cursor class
   newAiSpeechBubble.classList.add("speech", "speech-ai", "blinking-cursor"); // Add blinking cursor class
   chatbotConversation.appendChild(newAiSpeechBubble);
   renderTypewriterText(response, newAiSpeechBubble); // Use typewriter effect for response
