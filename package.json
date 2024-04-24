@@ -15,6 +15,7 @@
     "@langchain/community": "^0.0.43",
     "@langchain/openai": "^0.0.23",
     "@supabase/supabase-js": "^2.40.0",
+    "@vercel/analytics": "^1.2.2",
     "firebase": "^10.9.0",
     "langchain": "^0.1.30"
   }
