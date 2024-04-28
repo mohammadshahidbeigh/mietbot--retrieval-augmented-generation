@@ -272,9 +272,23 @@ async function generateSuggestivePrompts(userInput) {
 
     if (chatCompletion.choices && chatCompletion.choices.length > 0) {
       const messageContent = chatCompletion.choices[0].message.content.trim();
-      const promptElement = document.createElement("div");
-      promptElement.textContent = messageContent;
-      suggestivePromptsContainer.appendChild(promptElement);
+      const prompts = messageContent.split("\n").map((line) => line.trim());
+
+      prompts.forEach((promptText) => {
+        // Create a button for each prompt
+        const promptButton = document.createElement("button");
+        promptButton.textContent = promptText.replace(/^\d+\.\s*/, "");
+        promptButton.classList.add("suggestive-prompt-button"); // Add a class for styling
+        promptButton.addEventListener("click", () => {
+          // Find the input element by its ID
+          const userInput = document.getElementById("user-input");
+          // Set its value as the text content of the clicked button
+          userInput.value = promptButton.textContent;
+          // Trigger a click event on the submit button
+          document.getElementById("submit-btn").click();
+        });
+        suggestivePromptsContainer.appendChild(promptButton);
+      });
     } else {
       // No choices found in response
       const errorMessage = document.createElement("div");
