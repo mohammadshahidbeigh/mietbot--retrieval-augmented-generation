@@ -16,7 +16,10 @@
     "@langchain/openai": "^0.0.23",
     "@supabase/supabase-js": "^2.40.0",
     "@vercel/analytics": "^1.2.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "firebase": "^10.9.0",
-    "langchain": "^0.1.30"
+    "langchain": "^0.1.30",
+    "openai": "^4.38.5"
   }
 }

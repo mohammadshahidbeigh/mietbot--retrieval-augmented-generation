@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Check if input is not empty before progressing conversation
       if (userInput.value.trim() !== "") {
-        progressConversation(); // Call the progressConversation function
+        progressConversation();
+        // Call the progressConversation function
       }
     }
   });
@@ -132,6 +133,9 @@ async function progressConversation() {
     question: question,
     response: response,
   });
+
+  // Generate suggestive prompts
+  generateSuggestivePrompts(question);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -241,3 +245,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 });
+
+import OpenAI from "openai";
+import { process } from "./env";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true, // For Frontend Usage/Can be omitted.
+});
+
+async function generateSuggestivePrompts(userInput) {
+  const suggestivePromptsContainer = document.getElementById(
+    "chatbot-prompts-container"
+  );
+  suggestivePromptsContainer.innerHTML = ""; // Clear previous suggestions
+
+  const promptTemplate = `Given the user input: ${userInput}, generate 5 suggestive one word prompts.`;
+
+  try {
+    const chatCompletion = await openai.chat.completions.create({
+      messages: [{ role: "user", content: promptTemplate }],
+      model: "gpt-3.5-turbo",
+    });
+
+    console.log("Chat completion response:", chatCompletion); // Log the entire response
+
+    if (chatCompletion.choices && chatCompletion.choices.length > 0) {
+      const messageContent = chatCompletion.choices[0].message.content.trim();
+      const promptElement = document.createElement("div");
+      promptElement.textContent = messageContent;
+      suggestivePromptsContainer.appendChild(promptElement);
+    } else {
+      // No choices found in response
+      const errorMessage = document.createElement("div");
+      errorMessage.textContent =
+        "Sorry, no suggestive prompts are available at the moment.";
+      errorMessage.classList.add("error-message");
+      suggestivePromptsContainer.appendChild(errorMessage);
+    }
+  } catch (error) {
+    console.error("Error generating suggestive prompts:", error);
+    // Display error message
+    const errorMessage = document.createElement("div");
+    errorMessage.textContent =
+      "Sorry, an error occurred while generating suggestive prompts.";
+    errorMessage.classList.add("error-message");
+    suggestivePromptsContainer.appendChild(errorMessage);
+  }
+}

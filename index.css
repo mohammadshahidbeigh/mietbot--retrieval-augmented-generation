@@ -116,6 +116,12 @@ main {
   border-top-right-radius: 0;
 }
 
+.chatbot-prompts-container {
+  background-color: black;
+  text-align: center;
+  background: #3b82f6;
+  border-top-right-radius: 0;
+}
 .chatbot-input-container {
   display: flex;
 }
