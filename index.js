@@ -259,10 +259,16 @@ const openai = new OpenAI({
 });
 
 async function generateSuggestivePrompts(userInput) {
-  const suggestivePromptsContainer = document.getElementById(
-    "chatbot-prompts-container"
-  );
-  suggestivePromptsContainer.innerHTML = ""; // Clear previous suggestions
+  const chatbotConversation = document.getElementById("chatbot-conversation");
+  const suggestivePromptsContainer = document.createElement("div");
+  suggestivePromptsContainer.classList.add("chatbot-prompts-container");
+  suggestivePromptsContainer.id = "chatbot-prompts-container";
+
+  // Add the suggestive prompts container after the human input
+  chatbotConversation.appendChild(suggestivePromptsContainer);
+
+  // Clear previous suggestions
+  suggestivePromptsContainer.innerHTML = "";
 
   const promptTemplate = `Given the user input: ${userInput}, generate 3 suggestive few word prompts.`;
 
