@@ -86,6 +86,7 @@ const chain = RunnableSequence.from([
 ]);
 
 const convHistory = [];
+
 // Define suggestive prompts container
 const suggestivePromptsContainer = document.createElement("div");
 suggestivePromptsContainer.classList.add("chatbot-prompts-container");
