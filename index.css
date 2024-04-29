@@ -137,6 +137,16 @@ main {
   font-size: 16px;
 }
 
+/* Add CSS for clicked button */
+.suggestive-prompt-button.clicked {
+  background-image: linear-gradient(
+    to right,
+    #3b82f6,
+    #93c5fd
+  ); /* Gradient background color on hover */
+  font-size: 16px;
+}
+
 .chatbot-prompts-container {
   display: flex;
   flex-direction: column;

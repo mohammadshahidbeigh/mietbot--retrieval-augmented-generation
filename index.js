@@ -133,9 +133,12 @@ async function progressConversation() {
 
   // Scroll to the bottom of the conversation container after adding the AI message
   chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+  // Store conversation in Firebase
+  push(conversationRef, {
+    question: question,
+    response: response,
+  });
 }
-
-// Rest of the code...
 
 document.addEventListener("DOMContentLoaded", () => {
   const clearButton = document.getElementById("clear-btn");
@@ -287,6 +290,7 @@ async function generateSuggestivePrompts(userInput) {
           userInput.value = promptButton.textContent;
           // Trigger a click event on the submit button
           document.getElementById("submit-btn").click();
+          promptButton.classList.add("clicked");
         });
         suggestivePromptsContainer.appendChild(promptButton);
       });
