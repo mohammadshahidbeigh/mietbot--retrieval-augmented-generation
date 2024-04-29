@@ -38,7 +38,7 @@ main {
 }
 
 .chatbot-container > * {
-  padding: 1.8em;
+  padding: 2em;
 }
 
 .chatbot-header {
@@ -77,7 +77,7 @@ main {
 }
 
 .chatbot-conversation {
-  height: 400px;
+  height: 420px;
   overflow-y: scroll;
   margin: 0em 0;
 }
