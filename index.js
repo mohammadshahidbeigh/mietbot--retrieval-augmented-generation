@@ -86,6 +86,10 @@ const chain = RunnableSequence.from([
 ]);
 
 const convHistory = [];
+// Define suggestive prompts container
+const suggestivePromptsContainer = document.createElement("div");
+suggestivePromptsContainer.classList.add("chatbot-prompts-container");
+suggestivePromptsContainer.id = "chatbot-prompts-container";
 
 async function progressConversation() {
   const userInput = document.getElementById("user-input");
@@ -116,23 +120,22 @@ async function progressConversation() {
   convHistory.push(response);
 
   // Add AI message
+  // Add AI message with typewriter effect
   const newAiSpeechBubble = document.createElement("div");
   newAiSpeechBubble.classList.add("speech", "speech-ai", "blinking-cursor"); // Add blinking cursor class
   chatbotConversation.appendChild(newAiSpeechBubble);
-  renderTypewriterText(response, newAiSpeechBubble); // Use typewriter effect for response
+  renderTypewriterText(response, newAiSpeechBubble, () => {
+    // Append container for suggestive prompts after each AI response
+    chatbotConversation.appendChild(suggestivePromptsContainer);
+    // Generate suggestive prompts after typewriter effect completes
+    generateSuggestivePrompts(question);
+  });
 
   // Scroll to the bottom of the conversation container after adding the AI message
   chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
-
-  // Append container for suggestive prompts
-  const suggestivePromptsContainer = document.createElement("div");
-  suggestivePromptsContainer.classList.add("chatbot-prompts-container");
-  suggestivePromptsContainer.id = "chatbot-prompts-container";
-  chatbotConversation.appendChild(suggestivePromptsContainer);
-
-  // Generate suggestive prompts
-  generateSuggestivePrompts(question);
 }
+
+// Rest of the code...
 
 document.addEventListener("DOMContentLoaded", () => {
   const clearButton = document.getElementById("clear-btn");
@@ -148,13 +151,15 @@ function clearConversation() {
 }
 
 // Function to render AI response with typewriter effect
-function renderTypewriterText(text, element) {
+function renderTypewriterText(text, element, onComplete) {
   let i = 0;
   const interval = setInterval(() => {
     element.textContent += text.slice(i - 1, i);
     if (text.length === i) {
       clearInterval(interval);
       element.classList.remove("blinking-cursor");
+      // Call the onComplete callback when the typewriter effect completes
+      onComplete();
     }
     i++;
   }, 50);
@@ -256,7 +261,7 @@ async function generateSuggestivePrompts(userInput) {
   );
   suggestivePromptsContainer.innerHTML = ""; // Clear previous suggestions
 
-  const promptTemplate = `Given the user input: ${userInput}, generate 5 suggestive one word prompts.`;
+  const promptTemplate = `Given the user input: ${userInput}, generate 3 suggestive few word prompts.`;
 
   try {
     const chatCompletion = await openai.chat.completions.create({
