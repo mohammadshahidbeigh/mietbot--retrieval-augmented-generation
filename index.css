@@ -119,8 +119,9 @@ main {
 .suggestive-prompt-button {
   background: white;
   color: black;
-  padding: 0.5rem;
+  padding: 0.8rem;
   margin: 0.5rem;
+  border-width: 2px;
   border-top-left-radius: 0;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease; /* Add transition effect */
