@@ -286,6 +286,12 @@ h2 {
     height: fit-content;
     font-size: 1em;
   }
+
+  .suggestive-prompt-button {
+    max-width: fit-content;
+    height: fit-content;
+    font-size: 1em;
+  }
   .chatbot-input-container {
     height: 12%;
     width: 100%;
