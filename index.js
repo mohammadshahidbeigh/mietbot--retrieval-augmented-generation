@@ -149,8 +149,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function clearConversation() {
   const chatbotConversation = document.getElementById("chatbot-conversation");
+  const suggestivePromptsContainer = document.getElementById(
+    "chatbot-prompts-container"
+  );
+
+  // Clear the conversation in the chatbot conversation container
   chatbotConversation.innerHTML =
     '<div class="speech speech-ai">Hey there! Welcome to MIET Jammu\'s virtual assistant.<br> How can I assist you today?</div>';
+
+  // Remove the suggestive prompts container
+  if (suggestivePromptsContainer) {
+    suggestivePromptsContainer.remove();
+  }
 }
 
 // Function to render AI response with typewriter effect
