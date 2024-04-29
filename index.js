@@ -278,8 +278,6 @@ async function generateSuggestivePrompts(userInput) {
       model: "gpt-3.5-turbo",
     });
 
-    console.log("Chat completion response:", chatCompletion); // Log the entire response
-
     if (chatCompletion.choices && chatCompletion.choices.length > 0) {
       const messageContent = chatCompletion.choices[0].message.content.trim();
       const prompts = messageContent.split("\n").map((line) => line.trim());

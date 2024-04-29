@@ -281,17 +281,18 @@ h2 {
   .chatbot-conversation {
     height: 400%;
   }
+
   .speech {
     max-width: fit-content;
     height: fit-content;
     font-size: 1em;
   }
-
   .suggestive-prompt-button {
     max-width: fit-content;
     height: fit-content;
     font-size: 1em;
   }
+
   .chatbot-input-container {
     height: 12%;
     width: 100%;
