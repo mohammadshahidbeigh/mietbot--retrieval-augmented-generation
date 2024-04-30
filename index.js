@@ -85,11 +85,27 @@ const chain = RunnableSequence.from([
   answerChain,
 ]);
 
-const convHistory = [];
+let convHistory = [];
+
 // Define suggestive prompts container
 const suggestivePromptsContainer = document.createElement("div");
 suggestivePromptsContainer.classList.add("chatbot-prompts-container");
 suggestivePromptsContainer.id = "chatbot-prompts-container";
+
+// Retrieve conversation history from local storage when the page loads
+document.addEventListener("DOMContentLoaded", () => {
+  const storedHistory = localStorage.getItem("conversationHistory");
+  if (storedHistory) {
+    convHistory = JSON.parse(storedHistory);
+    // Render the conversation history on the page
+    renderConversationHistory(convHistory);
+    // Generate suggestive prompts after rendering conversation history
+    const lastQuestion = convHistory[convHistory.length - 2]; // Get the last question from history
+    if (lastQuestion) {
+      generateSuggestivePrompts(lastQuestion);
+    }
+  }
+});
 
 async function progressConversation() {
   const userInput = document.getElementById("user-input");
@@ -138,6 +154,9 @@ async function progressConversation() {
     question: question,
     response: response,
   });
+
+  // Store conversation history in local storage
+  localStorage.setItem("conversationHistory", JSON.stringify(convHistory));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -161,6 +180,9 @@ function clearConversation() {
   if (suggestivePromptsContainer) {
     suggestivePromptsContainer.remove();
   }
+
+  // Clear conversation history in local storage
+  localStorage.removeItem("conversationHistory");
 }
 
 // Function to render AI response with typewriter effect
@@ -176,6 +198,20 @@ function renderTypewriterText(text, element, onComplete) {
     }
     i++;
   }, 50);
+}
+
+// Function to render conversation history
+function renderConversationHistory(history) {
+  const chatbotConversation = document.getElementById("chatbot-conversation");
+  history.forEach((item, index) => {
+    const bubble = document.createElement("div");
+    bubble.classList.add(
+      "speech",
+      index % 2 === 0 ? "speech-human" : "speech-ai"
+    );
+    bubble.textContent = item;
+    chatbotConversation.appendChild(bubble);
+  });
 }
 
 // Append style for blinking cursor
@@ -280,7 +316,7 @@ async function generateSuggestivePrompts(userInput) {
   // Clear previous suggestions
   suggestivePromptsContainer.innerHTML = "";
 
-  const promptTemplate = `Given the user input: ${userInput}, generate 3 suggestive few word prompts.`;
+  const promptTemplate = `Given the user input: ${userInput}, regardless of the input's context, generate 3 suggestive few word prompts always tied to "MIET Jammu College". Potential topics could be about campus life, academic programs, admissions, etc. No hallucination, remember the focus on MIET Jammu College.`;
 
   try {
     const chatCompletion = await openai.chat.completions.create({
