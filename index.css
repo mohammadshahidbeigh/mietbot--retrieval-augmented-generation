@@ -82,6 +82,24 @@ main {
   margin: 0em 0;
 }
 
+/* Styles for the progress button */
+#progress-btn {
+  font-size: 20px;
+  position: relative;
+  top: 10px; /* Adjust position from bottom */
+  left: 200px; /* Adjust position from right */
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue color */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover effect for the progress button */
+#progress-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
 /* stop ugly scroll bar on some browsers */
 .chatbot-conversation::-webkit-scrollbar {
   display: none;
@@ -290,7 +308,16 @@ h2 {
   .suggestive-prompt-button {
     max-width: fit-content;
     height: fit-content;
-    font-size: 1em;
+    font-size: 12px;
+  }
+
+  .suggestive-prompt-button:hover {
+    font-size: 12px;
+  }
+
+  /* Add CSS for clicked button */
+  .suggestive-prompt-button.clicked {
+    font-size: 12px;
   }
 
   .chatbot-input-container {
