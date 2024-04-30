@@ -77,27 +77,10 @@ main {
 }
 
 .chatbot-conversation {
-  height: 420px;
-  overflow-y: scroll;
-  margin: 0em 0;
-}
-
-/* Styles for the progress button */
-#progress-btn {
-  font-size: 20px;
-  position: relative;
-  top: 10px; /* Adjust position from bottom */
-  left: 200px; /* Adjust position from right */
-  padding: 10px 20px;
-  background-color: #007bff; /* Blue color */
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-/* Hover effect for the progress button */
-#progress-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  max-height: 420px; /* Set a maximum height */
+  min-height: 420px;
+  overflow-y: auto; /* Automatically add scrollbar if needed */
+  margin: 0;
 }
 
 /* stop ugly scroll bar on some browsers */
@@ -273,8 +256,8 @@ h2 {
   }
 
   .chatbot-container {
-    height: 85%;
-    width: 85%;
+    height: 80%;
+    width: 80%;
   }
   .chatbot-header {
     height: 28%;
@@ -297,7 +280,7 @@ h2 {
     width: 70%;
   }
   .chatbot-conversation {
-    height: 400%;
+    min-height: 0px;
   }
 
   .speech {
