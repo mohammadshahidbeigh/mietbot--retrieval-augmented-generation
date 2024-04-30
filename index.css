@@ -153,7 +153,7 @@ main {
     #3b82f6,
     #93c5fd
   ); /* Gradient background color on hover */
-  font-size: 16px;
+  font-size: 17px;
 }
 
 /* Add CSS for clicked button */
@@ -303,21 +303,21 @@ h2 {
   .speech {
     max-width: fit-content;
     height: fit-content;
-    font-size: 1em;
+    font-size: 12px;
   }
   .suggestive-prompt-button {
     max-width: fit-content;
     height: fit-content;
-    font-size: 12px;
+    font-size: 6px;
   }
 
   .suggestive-prompt-button:hover {
-    font-size: 12px;
+    font-size: 7px;
   }
 
   /* Add CSS for clicked button */
   .suggestive-prompt-button.clicked {
-    font-size: 12px;
+    font-size: 6px;
   }
 
   .chatbot-input-container {
