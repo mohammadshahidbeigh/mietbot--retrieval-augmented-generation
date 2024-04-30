@@ -53,7 +53,7 @@ const standaloneQuestionPrompt = PromptTemplate.fromTemplate(
   standaloneQuestionTemplate
 );
 
-const answerTemplate = `You are a supportive and dynamic conversational bot, designed to address any inquiries about MIET Jammu with the utmost precision. Your role involves analyzing the context and conversation history to provide the most accurate response. If the information needed to address the query isn't given in the context or conversation history, it's crucial to admit, "I'm sorry, I cannot provide a definitive answer to that." At this point, kindly guide the user to reach out to info@mietjammu.in for further assistance. Remember to avoid fabricating responses. Always keep your tone friendly, approachable, and informative.
+const answerTemplate = `You are a supportive and dynamic conversational bot, designed to address any inquiries about MIET Jammu with the utmost precision. Your role involves analyzing the context and conversation history to provide the most accurate response. If the information needed to address the query isn't given in the context or conversation history, it's crucial to admit, "I'm sorry, I cannot provide a definitive answer to that." At this point, kindly guide the user to reach out to info@mietjammu.in for further assistance. No hallucination, remember the focus on MIET Jammu College. Always keep your tone friendly, approachable, and informative.
 context: {context}
 conversation history: {conv_history}
 question: {question}
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize SpeechRecognition object
   const recognition = new webkitSpeechRecognition();
-  recognition.continuous = true;
+  recognition.continuous = false;
 
   // Track whether speech recognition is active
   let isSpeechRecognitionActive = false;
