@@ -280,7 +280,7 @@ h2 {
     width: 70%;
   }
   .chatbot-conversation {
-    min-height: 0px;
+    min-height: 345px;
   }
 
   .speech {
