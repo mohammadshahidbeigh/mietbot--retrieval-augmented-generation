@@ -1,4 +1,4 @@
-Creating a `README.md` file for a GitHub repository for your project, such as the MIETBOT chatbot, is essential for explaining the purpose, structure, and usage of your project to other developers, potential collaborators, or end-users. Here’s a template for what your `README.md` file might look like:
+
 
 ```markdown
 # MIETBOT: AI-Powered Chatbot for Academic Assistance
