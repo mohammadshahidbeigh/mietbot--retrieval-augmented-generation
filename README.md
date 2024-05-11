@@ -14,16 +14,25 @@ MIETBOT is an AI-powered chatbot designed to assist students, faculty, and visit
 ## Technologies Used
 
 - **HTML/CSS/JavaScript**: For front-end development.
-- **Python**: For backend logic and integration with the OpenAI API.
-- **OpenAI API**: Enhances natural language understanding capabilities.
+- **Langchain**: For backend logic and integration with the Chatgpt OpenAI.
+- **OpenAI Embeddings**: Enhances natural language understanding capabilities.
 - **Firebase**: Provides real-time database storage.
 - **Supabase Vector Database**: Efficiently manages and stores OpenAI embeddings.
 
-## Installation
+## License
 
-Clone the repository to your local machine using the following commands:
+Distributed under the MIT License. See the `LICENSE` file for more information.
 
-```bash
-git clone https://github.com/<yourusername>/mietbot.git
-cd mietbot
+## Contact
+
+Your Name – [@your_twitter](https://twitter.com/your_twitter) – email@example.com
+
+Project Link: [https://github.com/<yourusername>/mietbot](https://github.com/<yourusername>/mietbot)
+
+## Acknowledgments
+
+- Miss Gurpeet Kour, Project Supervisor
+- Prof. (Dr.) Surbhi Sharma, Head of the Department, Electronics and Communication
+- Model Institute of Engineering & Technology, Jammu
+
 
