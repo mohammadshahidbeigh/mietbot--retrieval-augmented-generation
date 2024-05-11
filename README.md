@@ -24,15 +24,9 @@ MIETBOT is an AI-powered chatbot designed to assist students, faculty, and visit
 
 Distributed under the MIT License. See the `LICENSE` file for more information.
 
-## Contact
-
-Your Name – [@your_twitter](https://twitter.com/your_twitter) – email@example.com
-
-Project Link: [https://github.com/<yourusername>/mietbot](https://github.com/<yourusername>/mietbot)
-
 ## Acknowledgments
 
-- Miss Gurpeet Kour, Project Supervisor
+- Prof. Gurpeet Kour, Project Supervisor
 - Prof. (Dr.) Surbhi Sharma, Head of the Department, Electronics and Communication
 - Model Institute of Engineering & Technology, Jammu
 
