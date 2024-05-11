@@ -18,6 +18,7 @@ MIETBOT is an AI-powered chatbot designed to assist students, faculty, and visit
 - **OpenAI Embeddings**: Enhances natural language understanding capabilities.
 - **Firebase**: Provides real-time database storage.
 - **Supabase Vector Database**: Efficiently manages and stores OpenAI embeddings.
+- **Retrieval augmented generation**: RAG is a technique used in natural language processing that combines the retrieval of informational documents and the generation of text based on that retrieved information. This allows for more contextually relevant and informed responses in AI applications.
 
 ## License
 
