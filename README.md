@@ -20,6 +20,21 @@ MIETBOT is an AI-powered chatbot designed to assist students, faculty, and visit
 - **Supabase Vector Database**: Efficiently manages and stores OpenAI embeddings.
 - **Retrieval augmented generation**: RAG is a technique used in natural language processing that combines the retrieval of informational documents and the generation of text based on that retrieved information. This allows for more contextually relevant and informed responses in AI applications.
 
+## MIETBOT Development Details
+
+### Data Integration
+- **Initiated the project** by collecting institutional data from the official MIET website ([www.mietjammu.in](http://www.mietjammu.in)) and systematically uploaded it to the Supabase Vector Database using `Langchain.js` for efficient data handling and retrieval.
+
+### Frontend and Backend Development
+- **Developed the user interface** using HTML, CSS, and JavaScript. Integrated these with `Langchain.js` to create dynamic response chains and templates, such as question-answer formats, enhancing user interaction with the chatbot.
+
+### Natural Language Processing
+- **Implemented ChatGPT OpenAI API and OpenAI Embeddings** for backend logic, significantly boosting the chatbot's ability to understand and generate human-like responses. Enhanced response relevance and information richness by incorporating **Retrieval-Augmented Generation (RAG)** techniques.
+
+### Data Storage
+- **Employed Firebase** to store conversation logs, ensuring data persistence and accessibility, which aids in refining chatbot responses and tracking user engagement.
+
+
 ## License
 
 Distributed under the MIT License. See the `LICENSE` file for more information.
