@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-const openAIApiKey = "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";
+const openAIApiKey = "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";
 const llm = new ChatOpenAI({ openAIApiKey });
 
 const standaloneQuestionTemplate = `Given some conversation history (if any) and a question, convert the question to a standalone question. 

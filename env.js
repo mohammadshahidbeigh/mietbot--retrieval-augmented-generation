@@ -6,6 +6,6 @@
 
 export const process = {
   env: {
-    OPENAI_API_KEY: "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", // Your OpenAI API Keyy
+    OPENAI_API_KEY: "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", // Your OpenAI API Keyy
   },
 };
