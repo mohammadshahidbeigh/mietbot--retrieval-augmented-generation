@@ -16,7 +16,6 @@ const appSettings = {
   databaseURL:
     "https://mietbot-2-default-rtdb.asia-southeast1.firebasedatabase.app/",
 };
-
 const app = initializeApp(appSettings);
 const database = getDatabase(app);
 const conversationRef = ref(database, "conversations");
@@ -24,22 +23,56 @@ const conversationRef = ref(database, "conversations");
 document.addEventListener("DOMContentLoaded", () => {
   const userInput = document.getElementById("user-input");
   const submitButton = document.getElementById("submit-btn");
+  const micButton = document.getElementById("microphone-btn");
+  const micSound = document.getElementById("mic-sound");
+  const micStopSound = document.getElementById("mic-stop-sound");
 
-  // Event listener for the submit button
   submitButton.addEventListener("click", progressConversation);
-
-  // Event listener for Enter key press in the input field
   userInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Prevent default form submission behavior
-
-      // Check if input is not empty before progressing conversation
+      event.preventDefault();
       if (userInput.value.trim() !== "") {
         progressConversation();
-        // Call the progressConversation function
       }
     }
   });
+
+  const recognition = new webkitSpeechRecognition();
+  recognition.continuous = false;
+  let isSpeechRecognitionActive = false;
+
+  micButton.addEventListener("click", () => {
+    if (!isSpeechRecognitionActive) {
+      if (recognition) {
+        isSpeechRecognitionActive = true;
+        recognition.start();
+        micButton.classList.add("active");
+        micButton.classList.add("hover-active");
+        micSound.play();
+      } else {
+        console.error("Speech recognition is not supported in this browser.");
+      }
+    } else {
+      isSpeechRecognitionActive = false;
+      recognition.stop();
+      micButton.classList.remove("active");
+      micButton.classList.remove("hover-active");
+      micStopSound.play();
+      micStopSound.currentTime = 0;
+    }
+  });
+
+  recognition.onresult = function (event) {
+    const transcript = event.results[event.results.length - 1][0].transcript;
+    userInput.value += transcript;
+  };
+
+  recognition.onerror = function (event) {
+    console.error("Speech recognition error:", event.error);
+    if (event.error === "no-speech") {
+      alert("No speech detected. Please try again.");
+    }
+  };
 });
 
 const openAIApiKey = "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";
@@ -63,13 +96,11 @@ const answerPrompt = PromptTemplate.fromTemplate(answerTemplate);
 const standaloneQuestionChain = standaloneQuestionPrompt
   .pipe(llm)
   .pipe(new StringOutputParser());
-
 const retrieverChain = RunnableSequence.from([
   (prevResult) => prevResult.standalone_question,
   retriever,
   combineDocuments,
 ]);
-
 const answerChain = answerPrompt.pipe(llm).pipe(new StringOutputParser());
 
 const chain = RunnableSequence.from([
@@ -85,107 +116,80 @@ const chain = RunnableSequence.from([
   answerChain,
 ]);
 
-let convHistory = [];
+let conversationEntries = [];
 
-// Define suggestive prompts container
-const suggestivePromptsContainer = document.createElement("div");
-suggestivePromptsContainer.classList.add("chatbot-prompts-container");
-suggestivePromptsContainer.id = "chatbot-prompts-container";
+const suggestivePromptsTemplate = `Based on the user input "{user_input}", generate suggestive few word prompts from the stored questions in the database that are similar to "{user_input}".`;
+const suggestivePromptTemplate = PromptTemplate.fromTemplate(
+  suggestivePromptsTemplate
+);
 
-// Retrieve conversation history from local storage when the page loads
 document.addEventListener("DOMContentLoaded", () => {
-  const storedHistory = localStorage.getItem("conversationHistory");
-  if (storedHistory) {
-    convHistory = JSON.parse(storedHistory);
-    // Render the conversation history on the page
-    renderConversationHistory(convHistory);
-    // Generate suggestive prompts after rendering conversation history
-    const lastQuestion = convHistory[convHistory.length - 2]; // Get the last question from history
-    if (lastQuestion) {
-      generateSuggestivePrompts(lastQuestion);
-    }
+  const storedEntries = localStorage.getItem("conversationEntries");
+  if (storedEntries) {
+    conversationEntries = JSON.parse(storedEntries);
+    renderConversationEntries(conversationEntries);
   }
 });
 
 async function progressConversation() {
   const userInput = document.getElementById("user-input");
   const chatbotConversation = document.getElementById("chatbot-conversation");
-  const question = userInput.value.trim(); // Trim whitespace from the input
-  userInput.value = ""; // Clear the input field
+  const question = userInput.value.trim();
+  userInput.value = "";
 
-  // If the input is empty, return without progressing the conversation
   if (question === "") {
     return;
   }
 
-  // Add human message
   const newHumanSpeechBubble = document.createElement("div");
   newHumanSpeechBubble.classList.add("speech", "speech-human");
   newHumanSpeechBubble.textContent = question;
   chatbotConversation.appendChild(newHumanSpeechBubble);
-
-  // Scroll to the bottom of the conversation container
   chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
 
-  // Get response from AI
   const response = await chain.invoke({
     question: question,
-    conv_history: formatConvHistory(convHistory),
+    conv_history: formatConvHistory(
+      conversationEntries.map((entry) => entry.question)
+    ),
   });
-  convHistory.push(question);
-  convHistory.push(response);
 
-  // Add AI message
-  // Add AI message with typewriter effect
   const newAiSpeechBubble = document.createElement("div");
-  newAiSpeechBubble.classList.add("speech", "speech-ai", "blinking-cursor"); // Add blinking cursor class
+  newAiSpeechBubble.classList.add("speech", "speech-ai", "blinking-cursor");
   chatbotConversation.appendChild(newAiSpeechBubble);
-  renderTypewriterText(response, newAiSpeechBubble, () => {
-    // Append container for suggestive prompts after each AI response
-    chatbotConversation.appendChild(suggestivePromptsContainer);
-    // Generate suggestive prompts after typewriter effect completes
-    generateSuggestivePrompts(question);
+
+  renderTypewriterText(response, newAiSpeechBubble, async () => {
+    const prompts = await generateSuggestivePrompts(question);
+    const newEntry = {
+      question: question,
+      response: response,
+      prompts: prompts.map((prompt) => ({ text: prompt, clicked: false })),
+    };
+    conversationEntries.push(newEntry);
+    renderSuggestivePrompts(newEntry.prompts, chatbotConversation);
+    localStorage.setItem(
+      "conversationEntries",
+      JSON.stringify(conversationEntries)
+    );
+    chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
   });
 
-  // Scroll to the bottom of the conversation container after adding the AI message
-  chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
-  // Store conversation in Firebase
-  push(conversationRef, {
-    question: question,
-    response: response,
-  });
-
-  // Store conversation history in local storage
-  localStorage.setItem("conversationHistory", JSON.stringify(convHistory));
+  push(conversationRef, { question: question, response: response });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const clearButton = document.getElementById("clear-btn");
-  clearButton.addEventListener("click", () => {
-    clearConversation();
-  });
+  clearButton.addEventListener("click", clearConversation);
 });
 
 function clearConversation() {
   const chatbotConversation = document.getElementById("chatbot-conversation");
-  const suggestivePromptsContainer = document.getElementById(
-    "chatbot-prompts-container"
-  );
-
-  // Clear the conversation in the chatbot conversation container
   chatbotConversation.innerHTML =
     '<div class="speech speech-ai">Hey there! Welcome to MIET Jammu\'s virtual assistant.<br> How can I assist you today?</div>';
-
-  // Remove the suggestive prompts container
-  if (suggestivePromptsContainer) {
-    suggestivePromptsContainer.remove();
-  }
-
-  // Clear conversation history in local storage
-  localStorage.removeItem("conversationHistory");
+  localStorage.removeItem("conversationEntries");
+  conversationEntries = [];
 }
 
-// Function to render AI response with typewriter effect
 function renderTypewriterText(text, element, onComplete) {
   let i = 0;
   const interval = setInterval(() => {
@@ -193,172 +197,120 @@ function renderTypewriterText(text, element, onComplete) {
     if (text.length === i) {
       clearInterval(interval);
       element.classList.remove("blinking-cursor");
-      // Call the onComplete callback when the typewriter effect completes
       onComplete();
     }
     i++;
   }, 50);
 }
 
-// Function to render conversation history
-function renderConversationHistory(history) {
+function renderConversationEntries(entries) {
   const chatbotConversation = document.getElementById("chatbot-conversation");
-  history.forEach((item, index) => {
-    const bubble = document.createElement("div");
-    bubble.classList.add(
-      "speech",
-      index % 2 === 0 ? "speech-human" : "speech-ai"
-    );
-    bubble.textContent = item;
-    chatbotConversation.appendChild(bubble);
+  entries.forEach((entry) => {
+    const humanBubble = document.createElement("div");
+    humanBubble.classList.add("speech", "speech-human");
+    humanBubble.textContent = entry.question;
+    chatbotConversation.appendChild(humanBubble);
+
+    const aiBubble = document.createElement("div");
+    aiBubble.classList.add("speech", "speech-ai");
+    aiBubble.textContent = entry.response;
+    chatbotConversation.appendChild(aiBubble);
+
+    renderSuggestivePrompts(entry.prompts, chatbotConversation);
   });
 }
 
-// Append style for blinking cursor
-const style = document.createElement("style");
-style.textContent = `
-/* Define blinking cursor animation */
-@keyframes cursor-blink {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+function renderSuggestivePrompts(prompts, container) {
+  const suggestivePromptsContainer = document.createElement("div");
+  suggestivePromptsContainer.classList.add("chatbot-prompts-container");
+
+  prompts.forEach((prompt) => {
+    const button = document.createElement("button");
+    button.textContent = prompt.text;
+    button.classList.add("suggestive-prompt-button");
+    if (prompt.clicked) {
+      button.classList.add("clicked");
+    }
+    button.addEventListener("click", () => {
+      const userInputField = document.getElementById("user-input");
+      userInputField.value = prompt.text;
+      document.getElementById("submit-btn").click();
+      button.classList.add("clicked");
+
+      // Update the clicked state in the conversation entry
+      prompt.clicked = true;
+      localStorage.setItem(
+        "conversationEntries",
+        JSON.stringify(conversationEntries)
+      );
+    });
+    suggestivePromptsContainer.appendChild(button);
+  });
+
+  container.appendChild(suggestivePromptsContainer);
 }
 
-/* Apply blinking cursor animation to cursor element */
+const style = document.createElement("style");
+style.textContent = `
+@keyframes cursor-blink {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
 .blinking-cursor::after {
-  content: "●";/* Use FULL BLOCK character */
-  font-size: 24px; /* Set font size to make it bigger */
-  color: white; /* Set color to black */
+  content: "●";
+  font-size: 24px;
+  color: white;
   animation: cursor-blink 0.5s infinite;
 }
 `;
 document.head.appendChild(style);
 
-// Create Speech
-document.addEventListener("DOMContentLoaded", () => {
-  const micButton = document.getElementById("microphone-btn");
-  const userInput = document.getElementById("user-input");
-  const micSound = document.getElementById("mic-sound");
-  const micStopSound = document.getElementById("mic-stop-sound");
-
-  // Initialize SpeechRecognition object
-  const recognition = new webkitSpeechRecognition();
-  recognition.continuous = false;
-
-  // Track whether speech recognition is active
-  let isSpeechRecognitionActive = false;
-
-  // Event listener for microphone button click
-  micButton.addEventListener("click", toggleSpeechRecognition);
-
-  // Function to toggle between text input and speech recognition
-  function toggleSpeechRecognition() {
-    if (!isSpeechRecognitionActive) {
-      // Start speech recognition
-      if (recognition) {
-        isSpeechRecognitionActive = true;
-        recognition.start();
-        micButton.classList.add("active");
-        micButton.classList.add("hover-active");
-        micSound.play(); // Play the microphone sound
-      } else {
-        console.error("Speech recognition is not supported in this browser.");
-      }
-    } else {
-      // Stop speech recognition
-      isSpeechRecognitionActive = false;
-      recognition.stop();
-      micButton.classList.remove("active");
-      micButton.classList.remove("hover-active");
-      micStopSound.play(); // Play the microphone stop sound
-      micStopSound.currentTime = 0; // Reset the sound to the beginning
-    }
-  }
-
-  // Event listener for speech recognition results
-  recognition.onresult = function (event) {
-    const transcript = event.results[event.results.length - 1][0].transcript;
-    userInput.value += transcript;
-  };
-
-  // Event listener for speech recognition errors
-  recognition.onerror = function (event) {
-    console.error("Speech recognition error:", event.error);
-    if (event.error === "no-speech") {
-      alert("No speech detected. Please try again.");
-    }
-  };
-});
-
-import OpenAI from "openai";
-import { process } from "./env";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true, // For Frontend Usage/Can be omitted.
-});
-
 async function generateSuggestivePrompts(userInput) {
-  const chatbotConversation = document.getElementById("chatbot-conversation");
-  const suggestivePromptsContainer = document.createElement("div");
-  suggestivePromptsContainer.classList.add("chatbot-prompts-container");
-  suggestivePromptsContainer.id = "chatbot-prompts-container";
-
-  // Add the suggestive prompts container after the human input
-  chatbotConversation.appendChild(suggestivePromptsContainer);
-
-  // Clear previous suggestions
-  suggestivePromptsContainer.innerHTML = "";
-
-  const promptTemplate = `Given the user input: ${userInput}, regardless of the input's context, generate 3 suggestive few word prompts always tied to "MIET Jammu College". Potential topics could be about campus life, academic programs, admissions, etc. No hallucination, remember the focus on MIET Jammu College.`;
-
+  console.log("generateSuggestivePrompts received userInput:", userInput);
   try {
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: promptTemplate }],
-      model: "gpt-3.5-turbo",
+    const templateResult = await suggestivePromptTemplate.invoke({
+      user_input: userInput.toString(),
     });
+    console.log(
+      "Intermediate results from suggestivePromptTemplate:",
+      templateResult
+    );
 
-    if (chatCompletion.choices && chatCompletion.choices.length > 0) {
-      const messageContent = chatCompletion.choices[0].message.content.trim();
-      const prompts = messageContent.split("\n").map((line) => line.trim());
+    const promptString = templateResult.value;
+    console.log("Extracted prompt string:", promptString);
 
-      prompts.forEach((promptText) => {
-        // Create a button for each prompt
-        const promptButton = document.createElement("button");
-        promptButton.textContent = promptText.replace(/^\d+\.\s*/, "");
-        promptButton.classList.add("suggestive-prompt-button"); // Add a class for styling
-        promptButton.addEventListener("click", () => {
-          // Find the input element by its ID
-          const userInput = document.getElementById("user-input");
-          // Set its value as the text content of the clicked button
-          userInput.value = promptButton.textContent;
-          // Trigger a click event on the submit button
-          document.getElementById("submit-btn").click();
-          promptButton.classList.add("clicked");
-        });
-        suggestivePromptsContainer.appendChild(promptButton);
-      });
-    } else {
-      // No choices found in response
-      const errorMessage = document.createElement("div");
-      errorMessage.textContent =
-        "Sorry, no suggestive prompts are available at the moment.";
-      errorMessage.classList.add("error-message");
-      suggestivePromptsContainer.appendChild(errorMessage);
-    }
+    const retrievedDocuments = await retriever.getRelevantDocuments(
+      promptString
+    );
+    console.log("Retrieved documents from retriever:", retrievedDocuments);
+
+    const combinedDocuments = combineDocuments(retrievedDocuments);
+    console.log("Combined documents:", combinedDocuments);
+
+    const prompts = extractPrompts(combinedDocuments, userInput, 3);
+    console.log("Generated prompts:", prompts);
+
+    return prompts;
   } catch (error) {
-    console.error("Error generating suggestive prompts:", error);
-    // Display error message
-    const errorMessage = document.createElement("div");
-    errorMessage.textContent =
-      "Sorry, an error occurred while generating suggestive prompts.";
-    errorMessage.classList.add("error-message");
-    suggestivePromptsContainer.appendChild(errorMessage);
+    console.error("Error in generateSuggestivePrompts:", error);
+    return [];
   }
+}
+
+function extractPrompts(combinedText, userInput, limit) {
+  const questionRegex =
+    /(?:What|How|Where|When|Why|Which|Can|Do|Is|Are|Should)[^\.?!]*\?/g;
+  let matches = combinedText.match(questionRegex) || [];
+
+  matches = [...new Set(matches)].map((question) => {
+    if (!question.trim().endsWith("?")) {
+      question += "?";
+    }
+    return question.trim();
+  });
+
+  matches.sort((a, b) => a.length - b.length);
+
+  return matches.slice(0, limit);
 }
