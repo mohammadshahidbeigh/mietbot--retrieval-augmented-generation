@@ -1,4 +1,4 @@
-# MIETBOT: AI-Powered Chatbot for Academic Assistance
+# MIETBOT: An AI-Powered Chatbot for Academic Assistance
 
 ## Project Overview
 
