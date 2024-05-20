@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function clearConversation() {
   const chatbotConversation = document.getElementById("chatbot-conversation");
   chatbotConversation.innerHTML =
-    '<div class="speech speech-ai">Hey there! Welcome to MIET Jammu\'s virtual assistant.<br> How can I assist you today?</div>';
+    '<div class="speech speech-ai">Hey there! Welcome to MIET virtual assistant.<br> How can I assist you today?</div>';
   localStorage.removeItem("conversationEntries");
   conversationEntries = [];
 }
