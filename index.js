@@ -14,7 +14,7 @@ import { formatConvHistory } from "/utils/formatConvHistory";
 // Initialize Firebase
 const appSettings = {
   databaseURL:
-    "https://mietbot-2-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    "https:",
 };
 const app = initializeApp(appSettings);
 const database = getDatabase(app);
