@@ -16,9 +16,9 @@
 //   const output = await splitter.createDocuments([text]);
 
 //   const sbApiKey =
-//     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhYmx3Y2Nsb2FkYXNrbXl1YWp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE0NDc1MjQsImV4cCI6MjAyNzAyMzUyNH0.k__tl5k0CtaTThERC7srzBU_NINTXqMWg6LzvKKHa-4";
-//   const sbUrl = "https://wablwccloadaskmyuajy.supabase.co";
-//   const openAIApiKey = "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";
+//     "eyJh";
+//   const sbUrl = "https:supabase.co";
+//   const openAIApiKey = "sk";
 
 //   const client = createClient(sbUrl, sbApiKey);
 
