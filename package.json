@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^5.2.0"
+    "vite": "^5.4.12"
   },
   "dependencies": {
     "@langchain/community": "^0.0.43",
