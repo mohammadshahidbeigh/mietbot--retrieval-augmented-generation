@@ -12,7 +12,7 @@
     "vite": "^5.4.12"
   },
   "dependencies": {
-    "@langchain/community": "^0.0.43",
+    "@langchain/community": "^0.3.28",
     "@langchain/openai": "^0.0.23",
     "@supabase/supabase-js": "^2.40.0",
     "@vercel/analytics": "^1.2.2",
